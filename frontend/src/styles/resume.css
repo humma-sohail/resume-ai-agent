@@ -1,0 +1,43 @@
+/* Drag & Drop Upload Container */
+.upload-dropzone {
+  border: 2px dashed rgba(124, 92, 252, 0.35);
+  background: rgba(26, 31, 53, 0.5);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 40px 24px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.upload-dropzone:hover,
+.upload-dropzone.dragging {
+  border-color: #7C5CFC;
+  background: rgba(124, 92, 252, 0.08);
+  box-shadow: 0 0 25px rgba(124, 92, 252, 0.2);
+}
+
+/* Simulated Document Paper Container */
+.resume-paper-container {
+  background: #0D1222;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  font-family: 'Inter', sans-serif;
+  color: #E5E7EB;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.resume-section-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #A78BFA;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid rgba(167, 139, 250, 0.2);
+  padding-bottom: 6px;
+  margin-bottom: 12px;
+  margin-top: 20px;
+}

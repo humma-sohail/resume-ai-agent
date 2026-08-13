@@ -1,0 +1,64 @@
+networks:
+  app-network:
+    driver: bridge
+
+services:
+  gateway:
+    build:
+      context: ./gateway
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./gateway/.env
+    networks:
+      - app-network
+
+  resume-service:
+    build:
+      context: ./resume-service
+    ports:
+      - "5001:5001"
+    env_file:
+      - ./resume-service/.env
+    networks:
+      - app-network
+
+  ai-service:
+    build:
+      context: ./ai-service
+    ports:
+      - "5002:5002"
+    env_file:
+      - ./ai-service/.env
+    networks:
+      - app-network
+
+  chat-service:
+    build:
+      context: ./chat-service
+    ports:
+      - "5003:5003"
+    env_file:
+      - .env
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - app-network
+
+  chroma:
+    image: chromadb/chroma:latest
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network
