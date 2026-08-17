@@ -56,6 +56,7 @@ const uploadResume = async (req, res) => {
             parsedText: extractedText,
             parsedSummary: parsedSummary,
             chunks: finalChunks,
+            vectors: finalChunks,       // Frontend ke liye extra safety key
             vectorCount: finalChunks.length
         });
 
