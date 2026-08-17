@@ -29,7 +29,7 @@ const uploadResume = async (req, res) => {
 
         // Forward to resume-service container on the internal Docker network.
         // Resume service is exposed on port 5001 inside Docker Compose.
-        const RESUME_SERVICE_URL = "http://resume-service:5001/api/resume/upload";
+       const RESUME_SERVICE_URL = process.env.RESUME_SERVICE_URL || "http://localhost:8080/api/resume/upload";
 
         // Build headers and try to include Content-Length when possible (helps some servers).
         const headers = formData.getHeaders();
