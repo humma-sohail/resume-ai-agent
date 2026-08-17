@@ -38,6 +38,7 @@ const uploadResume = async (req, res) => {
 
         console.log("Resume parsed and chunked successfully!");
 
+        // Frontend ke saare possible keys match karne ke liye sab bhej rahe hain
         return res.status(200).json({
             success: true,
             message: "Resume uploaded and processed successfully!",
@@ -47,6 +48,9 @@ const uploadResume = async (req, res) => {
                 mimetype: req.file.mimetype
             },
             extractedText: extractedText,
+            text: extractedText,          // Frontend key fallback 1
+            content: extractedText,       // Frontend key fallback 2
+            parsedText: extractedText,    // Frontend key fallback 3
             parsedSummary: parsedSummary,
             chunks: chunks,
             vectorCount: chunks.length
