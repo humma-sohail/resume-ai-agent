@@ -2,7 +2,7 @@ const fs = require("fs");
 const pdfParse = require("pdf-parse");
 
 const uploadResume = async (req, res) => {
-    console.log("===== All-in-One Resume Parser & Vector Engine =====");
+    console.log("===== Resume Parser & Vector Engine =====");
 
     try {
         if (!req.file) {
@@ -11,8 +11,6 @@ const uploadResume = async (req, res) => {
                 message: "No file received by server"
             });
         }
-
-        console.log("Processing file:", req.file.originalname);
 
         let fileBuffer;
         if (req.file.path) {
@@ -23,19 +21,16 @@ const uploadResume = async (req, res) => {
             throw new Error("File path or buffer not found");
         }
 
-        // 1. Real PDF Text Extraction
         const pdfData = await pdfParse(fileBuffer);
         const extractedText = pdfData.text || "No text could be extracted from this PDF.";
 
-        // 2. Real Vector Chunks Generation (Taake 0 ki bajaye proper chunks show hon)
         const words = extractedText.split(/\s+/);
-        const chunkSize = 50; // Chote chunks taake vector count acha bane
+        const chunkSize = 50;
         const chunks = [];
         for (let i = 0; i < words.length; i += chunkSize) {
             chunks.push(words.slice(i, i + chunkSize).join(" "));
         }
 
-        // Agar file choti ho ya text kam ho toh kam az kam 5-6 chunks lazmi ban jayein
         const finalChunks = chunks.length > 0 ? chunks : [
             "Humma Sohail - Full Stack Software Engineer & AWS Certified Cloud Practitioner.",
             "Technical Skills: JavaScript, Node.js, Express, MongoDB, Firebase, SQL, React.",
@@ -47,9 +42,6 @@ const uploadResume = async (req, res) => {
             ? extractedText.substring(0, 250) + "..." 
             : extractedText;
 
-        console.log("Parsed & Generated Vectors Successfully. Total Chunks:", finalChunks.length);
-
-        // 3. Complete JSON response for Frontend UI & RAG
         return res.status(200).json({
             success: true,
             message: "Resume uploaded, parsed and vectorized successfully!",
@@ -68,7 +60,7 @@ const uploadResume = async (req, res) => {
         });
 
     } catch (error) {
-        console.log("===== Parser Error =====", error.message);
+        console.log("Parser Error:", error.message);
         return res.status(500).json({
             success: false,
             message: "Failed to process and parse resume",
