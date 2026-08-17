@@ -1,7 +1,8 @@
 const fs = require("fs");
+const pdfParse = require("pdf-parse");
 
 const uploadResume = async (req, res) => {
-    console.log("===== Local Resume Processing =====");
+    console.log("===== Original PDF Resume Parser =====");
 
     try {
         if (!req.file) {
@@ -11,9 +12,6 @@ const uploadResume = async (req, res) => {
             });
         }
 
-        console.log("Processing file:", req.file.originalname);
-
-        // File read karna
         let fileBuffer;
         if (req.file.path) {
             fileBuffer = fs.readFileSync(req.file.path);
@@ -23,18 +21,22 @@ const uploadResume = async (req, res) => {
             throw new Error("File path or buffer not found");
         }
 
-        // Safe text generation for parser & viewer
-        const extractedText = `Resume Document: ${req.file.originalname}\nSuccessfully uploaded and processed by Gateway server.\nSkills: Full Stack Development, QA, JavaScript, Node.js, React, Git, Docker.`;
-        
-        // Chunking for vector preview
+        // Asal PDF parsing active
+        const pdfData = await pdfParse(fileBuffer);
+        const extractedText = pdfData.text || "No text could be extracted from this PDF.";
+
         const words = extractedText.split(/\s+/);
-        const chunkSize = 15;
+        const chunkSize = 100;
         const chunks = [];
         for (let i = 0; i < words.length; i += chunkSize) {
             chunks.push(words.slice(i, i + chunkSize).join(" "));
         }
 
-        const parsedSummary = "Successfully uploaded resume document with full stack and development profile details.";
+        const parsedSummary = extractedText.length > 200 
+            ? extractedText.substring(0, 200) + "..." 
+            : extractedText;
+
+        console.log("Resume parsed and chunked successfully!");
 
         return res.status(200).json({
             success: true,
@@ -51,9 +53,7 @@ const uploadResume = async (req, res) => {
         });
 
     } catch (error) {
-        console.log("===== Parser Error =====");
-        console.log("Error message:", error.message);
-
+        console.log("Parser Error:", error.message);
         return res.status(500).json({
             success: false,
             message: "Failed to process and parse resume",
