@@ -337,6 +337,7 @@ function Dashboard() {
     }
   };
 
+
 const handleUploadSuccess = (data) => {
     const normalized = {
       ...data,
@@ -355,8 +356,6 @@ const handleUploadSuccess = (data) => {
     };
     setUploadDetails(normalized);
   };
-
-    setUploadDetails(normalized);
 
     appendMessage({
       sender: "AI",
