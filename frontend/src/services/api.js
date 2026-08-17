@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://resume-ai-agent-production.up.railway.app",
 });
 
 /* ================= RESUME PARSER ================= */
