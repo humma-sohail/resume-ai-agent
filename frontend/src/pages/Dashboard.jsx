@@ -337,7 +337,7 @@ function Dashboard() {
     }
   };
 
-  const handleUploadSuccess = (data) => {
+const handleUploadSuccess = (data) => {
     const normalized = {
       ...data,
       parsedText:
@@ -348,9 +348,13 @@ function Dashboard() {
         data.parsedSummary ?? (data.resumeData && data.resumeData.summary) ?? null,
       totalChunks:
         data.totalChunks ??
+        data.vectorCount ??
+        (data.chunks && data.chunks.length) ??
         (data.resumeData && data.resumeData.chunks && data.resumeData.chunks.length) ??
-        data.totalChunks
+        0
     };
+    setUploadDetails(normalized);
+  };
 
     setUploadDetails(normalized);
 
